@@ -143,19 +143,19 @@ public class Snake
             }
          }
       
-         if(findMax(marshCount, sandCount, mudCount, grassCount) > 4 && marshCount == findMax(marshCount, sandCount, mudCount, grassCount))
+         if(findMax(marshCount, sandCount, mudCount, grassCount) > gridSize*gridSize/2 && marshCount == findMax(marshCount, sandCount, mudCount, grassCount))
          {
             return "marshy";
          } 
-         else if(findMax(marshCount, sandCount, mudCount, grassCount) > 4 && sandCount == findMax(marshCount, sandCount, mudCount, grassCount))
+         else if(findMax(marshCount, sandCount, mudCount, grassCount) > gridSize*gridSize/2 && sandCount == findMax(marshCount, sandCount, mudCount, grassCount))
          {
             return "sandy";
          }
-         else if(findMax(marshCount, sandCount, mudCount, grassCount) > 4 && mudCount == findMax(marshCount, sandCount, mudCount, grassCount))
+         else if(findMax(marshCount, sandCount, mudCount, grassCount) > gridSize*gridSize/2 && mudCount == findMax(marshCount, sandCount, mudCount, grassCount))
          {
             return "muddy";
          }
-         else if(findMax(marshCount, sandCount, mudCount, grassCount) > 4 && grassCount == findMax(marshCount, sandCount, mudCount, grassCount))
+         else if(findMax(marshCount, sandCount, mudCount, grassCount) > gridSize*gridSize/2 && grassCount == findMax(marshCount, sandCount, mudCount, grassCount))
          {
             return "grassy";
          }
