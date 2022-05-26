@@ -18,8 +18,16 @@ public class Snake
       direction = d;
       updateDirectionString();
       terrain = new String[y][x];
-      initializeTerrain();
       gridSize = calcGridSize();
+
+      if(gridSize > x || gridSize > y){
+         System.out.println("Terrain grid could not be initialized with the specified dimensions since the snake requires a larger space than what its been given.");
+      }
+      else
+      {
+         initializeTerrain();
+      }
+      System.out.println(toString());
    }
 
    public void initializeTerrain()
@@ -28,7 +36,7 @@ public class Snake
       {
          for(int j = 0; j < terrain[0].length; j++)
          {
-            int rand = (int) (Math.random()*4);
+            int rand = (int) (Math.random()*5);
             if(rand == 0)
             {
                terrain[i][j] = "grassy";
@@ -40,6 +48,10 @@ public class Snake
             else if(rand == 2)
             {
                terrain[i][j] = "muddy";
+            }
+            else if(rand == 3)
+            {
+               terrain[i][j] = "snowy";
             }
             else
             {
@@ -67,14 +79,26 @@ public class Snake
       }
       else if(mainTerrainTypeOf(x, y).equalsIgnoreCase("marshy"))
       {
-         if(color.equalsIgnoreCase("gray") || color.equalsIgnoreCase("grey"))
+         if(color.equalsIgnoreCase("gray") || color.equalsIgnoreCase("grey") || color.equals("black"))
          {
             System.out.println("The terrain here is " + terrain[y][x]);
             System.out.println("The snake can hide on the coordinates (" + x + ", " + y + ") if the snake coils up.");
          }
          else
          {
-            System.out.println("The snake cannot hide on the coordinates (" + x + ", " + y + ") since the snake is " + color + " and the terrain at the coordinates is mainly " + mainTerrainTypeOf(x, y));
+            System.out.println("The snake cannot hide on the coordinates (" + x + ", " + y + ") since the snake is " + color + " and the terrain at the coordinates is mainly " + mainTerrainTypeOf(x, y) + ".");
+         }
+      }
+      else if(mainTerrainTypeOf(x, y).equalsIgnoreCase("snowy"))
+      {
+         if(color.equalsIgnoreCase("gray") || color.equalsIgnoreCase("grey") || color.equals("white"))
+         {
+            System.out.println("The terrain here is " + terrain[y][x]);
+            System.out.println("The snake can hide on the coordinates (" + x + ", " + y + ") if the snake coils up.");
+         }
+         else
+         {
+            System.out.println("The snake cannot hide on the coordinates (" + x + ", " + y + ") since the snake is " + color + " and the terrain at the coordinates is mainly " + mainTerrainTypeOf(x, y) + ".");
          }
       }
       else if(mainTerrainTypeOf(x, y).equalsIgnoreCase("muddy"))
@@ -86,7 +110,7 @@ public class Snake
          }
          else
          {
-            System.out.println("The snake cannot hide on the coordinates (" + x + ", " + y + ") since the snake is " + color + " and the terrain at the coordinates is mainly " + mainTerrainTypeOf(x, y));
+            System.out.println("The snake cannot hide on the coordinates (" + x + ", " + y + ") since the snake is " + color + " and the terrain at the coordinates is mainly " + mainTerrainTypeOf(x, y) + ".");
          }
       }
       else if(mainTerrainTypeOf(x, y).equalsIgnoreCase("sandy"))
@@ -98,16 +122,16 @@ public class Snake
          }
          else
          {
-            System.out.println("The snake cannot hide on the coordinates (" + x + ", " + y + ") since the snake is " + color + " and the terrain at the coordinates is mainly " + mainTerrainTypeOf(x, y));
+            System.out.println("The snake cannot hide on the coordinates (" + x + ", " + y + ") since the snake is " + color + " and the terrain at the coordinates is mainly " + mainTerrainTypeOf(x, y) + ".");
          }
       }
       else if(mainTerrainTypeOf(x, y).equalsIgnoreCase("mixed"))
       {
-         System.out.println("The snake cannot hide on the coordinates (" + x + ", " + y + ") since the snake is " + color + " and the terrain at the coordinates is mainly " + mainTerrainTypeOf(x, y));
+         System.out.println("The snake cannot hide on the coordinates (" + x + ", " + y + ") since the snake is " + color + " and the terrain at the coordinates is mainly " + mainTerrainTypeOf(x, y) + ".");
       }
       else
       {
-         System.out.println("The x or y values selected do not fit on the terrain grid.");
+         System.out.println("The x or y values selected do not fit on the terrain grid, or the snake would not fully remain on the terrain grid at the selected coordinates.");
       }
    }
    
@@ -118,6 +142,7 @@ public class Snake
       int marshCount = 0;
       int grassCount = 0;
       int mudCount = 0;
+      int snowCount = 0;
       try
       {
          for(int i = y - gridSize/2; i <= y + gridSize/2; i++)
@@ -140,24 +165,32 @@ public class Snake
                {
                   grassCount++;
                }
+               else if(terrain[i][j].equals("snowy"))
+               {
+                  snowCount++;
+               }
             }
          }
       
-         if(findMax(marshCount, sandCount, mudCount, grassCount) > gridSize*gridSize/2 && marshCount == findMax(marshCount, sandCount, mudCount, grassCount))
+         if(findMax(marshCount, sandCount, mudCount, grassCount, snowCount) > gridSize*gridSize/2 && marshCount == findMax(marshCount, sandCount, mudCount, grassCount, snowCount))
          {
             return "marshy";
          } 
-         else if(findMax(marshCount, sandCount, mudCount, grassCount) > gridSize*gridSize/2 && sandCount == findMax(marshCount, sandCount, mudCount, grassCount))
+         else if(findMax(marshCount, sandCount, mudCount, grassCount, snowCount) > gridSize*gridSize/2 && sandCount == findMax(marshCount, sandCount, mudCount, grassCount, snowCount))
          {
             return "sandy";
          }
-         else if(findMax(marshCount, sandCount, mudCount, grassCount) > gridSize*gridSize/2 && mudCount == findMax(marshCount, sandCount, mudCount, grassCount))
+         else if(findMax(marshCount, sandCount, mudCount, grassCount, snowCount) > gridSize*gridSize/2 && mudCount == findMax(marshCount, sandCount, mudCount, grassCount, snowCount))
          {
             return "muddy";
          }
-         else if(findMax(marshCount, sandCount, mudCount, grassCount) > gridSize*gridSize/2 && grassCount == findMax(marshCount, sandCount, mudCount, grassCount))
+         else if(findMax(marshCount, sandCount, mudCount, grassCount, snowCount) > gridSize*gridSize/2 && grassCount == findMax(marshCount, sandCount, mudCount, grassCount, snowCount))
          {
             return "grassy";
+         }
+         else if(findMax(marshCount, sandCount, mudCount, grassCount, snowCount) > gridSize*gridSize/2 && snowCount == findMax(marshCount, sandCount, mudCount, grassCount, snowCount))
+         {
+            return "snowy";
          }
          else
          {
@@ -180,31 +213,32 @@ public class Snake
       return count*2 - 1;
    }
 
-   public int findMax(int a, int b, int c, int d){
+   public int findMax(int a, int b, int c, int d, int e){
       int max = a;
       max = Math.max(max, b);
       max = Math.max(max, c);
       max = Math.max(max, d);
+      max = Math.max(max, e);
       return max;
    }
 
    public void updateDirectionString()
    {
-      if(direction%360 == 90)
+      if(45 <= direction%360 && direction%360 < 135)
       {
          directionString = "north";
       } 
-      else if(direction%360 == 0)
+      else if(135 <= direction%360 && direction%360 < 225)
       {
          directionString = "west";
       } 
-      else if(direction%360 == 180)
-      {
-         directionString = "east";
-      } 
-      else if(direction%360 == 270)
+      else if(225 <= direction%360 && direction%360 < 315)
       {
          directionString = "south";
+      } 
+      else if(315 <= direction%360 && direction%360 < 45)
+      {
+         directionString = "east";
       }
    }
    
